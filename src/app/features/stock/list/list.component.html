@@ -1,0 +1,194 @@
+<ng-container
+  *ngIf="{
+    list: (list$ | async) || [],
+    totalCount: (totalCount$ | async) || 0,
+    error: error$ | async,
+    loading: (loading$ | async) || false
+  } as vm"
+>
+  <div class="surface-card p-4 m-4 shadow-2 border-round">
+    <div class="flex justify-content-between mb-3">
+      <div class="text-3xl font-medium text-900 mb-3">Stock List</div>
+      <p-button
+        label="Add"
+        [text]="true"
+        [raised]="true"
+        severity="secondary"
+        icon="pi pi-plus"
+        iconPos="right"
+        pTooltip="Create New Vehicle Record"
+        tooltipPosition="left"
+        (onClick)="createRecord()"
+      ></p-button>
+    </div>
+
+    <p-table
+      [loading]="vm.loading"
+      [value]="vm.list"
+      [lazy]="true"
+      [paginator]="true"
+      [totalRecords]="totalCount"
+      [rows]="10"
+      styleClass="p-datatable-gridlines"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [customSort]="true"
+      (onSort)="onSort($event)"
+      (onPage)="onPaginate($event)"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 9%">Image</th>
+          <th pSortableColumn="regNo">
+            Reg. Number <p-sortIcon field="regNo"></p-sortIcon>
+          </th>
+          <th pSortableColumn="make">
+            Make <p-sortIcon field="make"></p-sortIcon>
+          </th>
+          <th pSortableColumn="model">
+            Model <p-sortIcon field="model"></p-sortIcon>
+          </th>
+          <th pSortableColumn="modelYear">
+            Model Year <p-sortIcon field="modelYear"></p-sortIcon>
+          </th>
+          <th pSortableColumn="kms">
+            Odometer <p-sortIcon field="kms"></p-sortIcon>
+          </th>
+          <th>Colour</th>
+          <th pSortableColumn="vinNo">
+            Vin No. <p-sortIcon field="vinNo"></p-sortIcon>
+          </th>
+          <th pSortableColumn="retailPrice">
+            Retail Price <p-sortIcon field="retailPrice"></p-sortIcon>
+          </th>
+          <th pSortableColumn="costPrice">
+            Cost Price <p-sortIcon field="costPrice"></p-sortIcon>
+          </th>
+          <th pSortableColumn="dtcreated">
+            Created <p-sortIcon field="dtcreated"></p-sortIcon>
+          </th>
+          <th pSortableColumn="dtupdated">
+            Updated <p-sortIcon field="dtupdated"></p-sortIcon>
+          </th>
+          <th>Actions</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>
+            <input
+              type="text"
+              pInputText
+              (input)="applyFilter($event, 'regNo')"
+              placeholder="Filter by reg. no"
+            />
+          </th>
+          <th>
+            <input
+              type="text"
+              pInputText
+              (input)="applyFilter($event, 'make')"
+              placeholder="Filter by make"
+            />
+          </th>
+          <th>
+            <input
+              type="text"
+              pInputText
+              (input)="applyFilter($event, 'model')"
+              placeholder="Filter by model"
+            />
+          </th>
+          <th>
+            <input
+              type="text"
+              pInputText
+              (input)="applyFilter($event, 'modelYear')"
+              placeholder="Filter by model year"
+            />
+          </th>
+          <th></th>
+          <th>
+            <input
+              type="text"
+              pInputText
+              (input)="applyFilter($event, 'colour')"
+              placeholder="Filter by colour"
+            />
+          </th>
+          <th>
+            <input
+              type="text"
+              pInputText
+              (input)="applyFilter($event, 'vinNo')"
+              placeholder="Filter by vin number"
+            />
+          </th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>
+            <img
+              *ngIf="item && item.images.length > 0"
+              [src]="getVehiclePrimaryImage(item)"
+              alt="Vehicle Primary Image"
+              width="100"
+              class="shadow-4"
+            />
+          </td>
+          <td>{{ item.regNo }}</td>
+          <td>{{ item.make }}</td>
+          <td>{{ item.model }}</td>
+          <td>{{ item.modelYear }}</td>
+          <td>{{ item.kms }}</td>
+          <td>{{ item.colour }}</td>
+          <td>{{ item.vinNo }}</td>
+          <td>
+            {{
+              item.retailPrice | currency : "R" : "symbol" : "1.2-2" : "en-ZA"
+            }}
+          </td>
+          <td>
+            {{ item.costPrice | currency : "R" : "symbol" : "1.2-2" : "en-ZA" }}
+          </td>
+          <td>{{ item.dtcreated }}</td>
+          <td>{{ item.dtupdated }}</td>
+          <td>
+            <div class="flex justify-content-center gap-2">
+              <p-button
+                icon="pi pi-pencil"
+                [rounded]="true"
+                [text]="true"
+                [raised]="true"
+                size="small"
+                severity="secondary"
+                pTooltip="Edit Vehicle Record"
+                tooltipPosition="top"
+                (onClick)="editRecord(item)"
+              ></p-button>
+              <p-button
+                icon="pi pi-trash"
+                [rounded]="true"
+                [text]="true"
+                [raised]="true"
+                size="small"
+                severity="danger"
+                pTooltip="Delete Vehicle Record"
+                tooltipPosition="top"
+              ></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="13">No vehicles found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</ng-container>
