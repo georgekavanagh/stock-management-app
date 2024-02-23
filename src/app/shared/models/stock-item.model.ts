@@ -2,7 +2,7 @@ import { Accessory } from "./accessory.model";
 import { Image } from "./image.model";
 
 export interface StockItem {
-  id: number;
+  id?: number;
   regNo: string;
   make: string;
   model: string;

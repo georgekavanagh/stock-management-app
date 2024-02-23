@@ -20,7 +20,7 @@ interface ListState {
   list: StockItem[];
   totalCount: number;
   loading: boolean;
-  error: boolean;
+  error: any;
 }
 
 interface ListParams {
@@ -42,7 +42,7 @@ export class ListStore extends ComponentStore<ListState> {
       list: [],
       totalCount: 0,
       loading: false,
-      error: false,
+      error: null,
     });
   }
 
@@ -62,12 +62,28 @@ export class ListStore extends ComponentStore<ListState> {
                   list: result.stockItems,
                   totalCount: result.totalCount,
                 }),
-              error: (err) => this.patchState({ error: true }),
+              error: (err) => this.patchState({ error: err }),
               finalize: () => this.patchState({ loading: false }),
             }),
             catchError(() => EMPTY)
           )
         )
       )
+  );
+
+  deleteStockItem = this.effect((stockItemId$: Observable<number>) =>
+    stockItemId$.pipe(
+      tap(() => this.patchState({ loading: true })),
+      switchMap((stockItemId: number) =>
+        this.apiService.deleteStockItem(stockItemId).pipe(
+          tap({
+            next: () => {},
+            error: (err) => this.patchState({ error: err }),
+            finalize: () => this.patchState({ loading: false }),
+          }),
+          catchError(() => EMPTY)
+        )
+      )
+    )
   );
 }

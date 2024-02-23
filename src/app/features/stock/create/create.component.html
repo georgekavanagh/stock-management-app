@@ -1,345 +1,49 @@
 <div class="surface-card p-4 m-4 shadow-2 border-round">
-  <div
-    class="flex justify-content-center text-center flex-column pb-4 border-bottom-1 surface-border mb-3"
-  >
+  <div class="flex justify-content-center text-center flex-column pb-4 mb-3">
     <div class="mb-3 lg:mb-0">
       <div class="text-3xl font-medium text-900 mb-3">
-        <i class="pi pi-pencil text-2xl mr-3 text-500"></i>Create Stock Item
+        <i class="pi pi-pencil text-2xl mr-3 text-500"></i
+        >{{ stockItemToEdit ? "Edit" : "Create" }} Stock Item
       </div>
       <div class="text-500 mr-0 md:mr-3">
-        Please enter the details below to create a new stock item
+        Please enter the details below to
+        {{ stockItemToEdit ? "update" : "create" }} a new stock item
       </div>
     </div>
   </div>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="grid formgrid p-fluid">
-      <div class="field mb-4 col-12 md:col-6">
-        <label for="make" class="font-medium text-900">Make</label
-        ><input
-          id="make"
-          type="text"
-          pinputtext
-          formControlName="make"
-          [ngClass]="
-            form.controls['make'].errors && form.controls['make'].touched
-              ? 'p-inputtext p-component p-element border-red-500'
-              : 'p-inputtext p-component p-element'
-          "
-        />
-        <div
-          *ngIf="form.controls['make'].errors && form.controls['make'].touched"
-          class="text-right"
-        >
-          <small class="text-red-500">Vehicle make is required</small>
-        </div>
-      </div>
-      <div class="field mb-4 col-12 md:col-6">
-        <label for="model" class="font-medium text-900">Model</label
-        ><input
-          id="model"
-          type="text"
-          pinputtext
-          formControlName="model"
-          [ngClass]="
-            form.controls['model'].errors && form.controls['model'].touched
-              ? 'p-inputtext p-component p-element border-red-500'
-              : 'p-inputtext p-component p-element'
-          "
-        />
-        <div
-          *ngIf="
-            form.controls['model'].errors && form.controls['model'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500">Vehicle model is required</small>
-        </div>
-      </div>
 
-      <div class="field mb-4 col-12 md:col-6">
-        <label for="modelYear" class="font-medium text-900">Model Year</label
-        ><input
-          id="modelYear"
-          type="number"
-          pinputtext
-          formControlName="modelYear"
-          [ngClass]="
-            form.controls['modelYear'].errors &&
-            form.controls['modelYear'].touched
-              ? 'p-inputtext p-component p-element border-red-500'
-              : 'p-inputtext p-component p-element'
-          "
-        />
-        <div
-          *ngIf="
-            form.controls['modelYear'].hasError('required') &&
-            form.controls['modelYear'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500">Vehicle year is required</small>
-        </div>
-
-        <div
-          *ngIf="
-            form.controls['modelYear'].hasError('min') &&
-            form.controls['modelYear'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500">Year must be greater than 1900</small>
-        </div>
-
-        <div
-          *ngIf="
-            form.controls['modelYear'].hasError('max') &&
-            form.controls['modelYear'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500"
-            >Year must be less than {{ currentYear + 2 }}</small
-          >
-        </div>
-      </div>
-
-      <div class="field mb-4 col-12 md:col-6">
-        <label for="regNo" class="font-medium text-900"
-          >Registration Number</label
-        ><input
-          id="regNo"
-          type="text"
-          pinputtext
-          formControlName="regNo"
-          [ngClass]="
-            form.controls['regNo'].errors && form.controls['regNo'].touched
-              ? 'p-inputtext p-component p-element border-red-500'
-              : 'p-inputtext p-component p-element'
-          "
-        />
-        <div
-          *ngIf="
-            form.controls['regNo'].errors && form.controls['regNo'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500"
-            >Vehicle registration number is required</small
-          >
-        </div>
-      </div>
-
-      <div class="field mb-4 col-12 md:col-6">
-        <label for="vinNo" class="font-medium text-900">Vin Number</label
-        ><input
-          id="vinNo"
-          type="text"
-          pinputtext
-          formControlName="vinNo"
-          [ngClass]="
-            form.controls['vinNo'].errors && form.controls['vinNo'].touched
-              ? 'p-inputtext p-component p-element border-red-500'
-              : 'p-inputtext p-component p-element'
-          "
-        />
-        <div
-          *ngIf="
-            form.controls['vinNo'].errors && form.controls['vinNo'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500">Vehicle vin number is required</small>
-        </div>
-      </div>
-
-      <div class="field mb-4 col-12 md:col-6">
-        <label for="colour" class="font-medium text-900">Colour</label
-        ><input
-          id="colour"
-          type="text"
-          pinputtext
-          formControlName="colour"
-          [ngClass]="
-            form.controls['colour'].errors && form.controls['colour'].touched
-              ? 'p-inputtext p-component p-element border-red-500'
-              : 'p-inputtext p-component p-element'
-          "
-        />
-        <div
-          *ngIf="
-            form.controls['colour'].errors && form.controls['colour'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500">Vehicle colour is required</small>
-        </div>
-      </div>
-
-      <div class="field col-12 md:col-6 mb-4">
-        <label for="retailPrice" class="font-medium text-900"
-          >Odometer Reading (KM)</label
-        >
-
-        <input
-          id="kms"
-          type="number"
-          pinputtext
-          formControlName="kms"
-          [ngClass]="
-            form.controls['kms'].errors && form.controls['kms'].touched
-              ? 'p-inputtext p-component p-element border-red-500'
-              : 'p-inputtext p-component p-element'
-          "
-        />
-
-        <div
-          *ngIf="
-            form.controls['kms'].hasError('required') &&
-            form.controls['kms'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500"
-            >Vehicle odometer reading is required</small
-          >
-        </div>
-        <div
-          *ngIf="
-            form.controls['kms'].hasError('min') && form.controls['kms'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500">You cannot have a negative reading</small>
-        </div>
-
-        <div
-          *ngIf="
-            form.controls['kms'].hasError('max') && form.controls['kms'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500"
-            >Reading must be less than 999 999 kms</small
-          >
-        </div>
-      </div>
-
-      <div class="surface-border border-bottom-1 opacity-50 mb-3 col-12"></div>
-      <div class="field col-12 md:col-6">
-        <label for="costPrice" class="font-medium text-900">Cost Price</label>
-        <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">R</span
-          ><input
-            id="costPrice"
-            type="text"
-            pinputtext
-            formControlName="costPrice"
-            [ngClass]="
-              form.controls['costPrice'].errors &&
-              form.controls['costPrice'].touched
-                ? 'p-inputtext p-component p-element border-red-500'
-                : 'p-inputtext p-component p-element'
-            "
-          />
-        </div>
-        <div
-          *ngIf="
-            form.controls['costPrice'].errors &&
-            form.controls['costPrice'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500">Vehicle cost price is required</small>
-        </div>
-      </div>
-      <div class="field col-12 md:col-6 mb-4">
-        <label for="retailPrice" class="font-medium text-900"
-          >Retail Price</label
-        >
-        <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">R</span
-          ><input
-            id="retailPrice"
-            type="text"
-            pinputtext
-            formControlName="retailPrice"
-            [ngClass]="
-              form.controls['retailPrice'].errors &&
-              form.controls['retailPrice'].touched
-                ? 'p-inputtext p-component p-element border-red-500'
-                : 'p-inputtext p-component p-element'
-            "
-          />
-        </div>
-        <div
-          *ngIf="
-            form.controls['retailPrice'].hasError('required') &&
-            form.controls['retailPrice'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500">Vehicle retail price is required</small>
-        </div>
-        <div
-          *ngIf="
-            form.controls['retailPrice'].hasError('min') &&
-            form.controls['retailPrice'].touched
-          "
-          class="text-right"
-        >
-          <small class="text-red-500">You cannot have a negative price</small>
-        </div>
-      </div>
-
-      <div class="field col-12 mb-4">
-        <label for="accessories" class="font-medium text-900"
-          >Acessories <span class="font-light text-500">(Optional)</span></label
-        >
-
-        <p-multiSelect
-          id="accessories"
-          [filter]="true"
-          [options]="accessoryList"
-          optionLabel="description"
-          formControlName="accessories"
-          optionLabel="description"
-          display="chip"
-          [maxSelectedLabels]="7"
-          [showClear]="true"
-        ></p-multiSelect>
-      </div>
-    </div>
-    <div class="surface-border border-top-1 opacity-50 mb-3 col-12"></div>
-    <div class="flex justify-content-end">
-      <p-button
-        label="Cancel"
-        [text]="true"
-        [raised]="true"
-        icon="pi pi-times"
-        iconPos="right"
-        severity="secondary"
-        (onClick)="onCancel()"
-      >
-      </p-button>
-      <p-button
-        type="submit"
-        label="Submit"
-        [text]="true"
-        [raised]="true"
+  <p-tabView styleClass="tabview-custom">
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <i class="pi pi-car"></i>
+        <span class="ml-1">Details</span>
+      </ng-template>
+      <app-stock-item-form
         [loading]="loading"
-        icon="pi pi-check"
-        severity="success"
-        iconPos="right"
-        class="ml-3"
-        [disabled]="form.invalid"
-      >
-      </p-button>
-    </div>
+        [itemToEdit]="stockItemToEdit"
+        (onSubmit)="onSubmit($event)"
+        (onCancel)="onCancel($event)"
+      ></app-stock-item-form>
+    </p-tabPanel>
+    <p-tabPanel *ngIf="stockItemToEdit">
+      <ng-template pTemplate="header">
+        <i class="pi pi-images"></i>
+        <span class="ml-1"
+          >Images ({{ stockItemToEdit.images.length || 0 }})</span
+        >
+      </ng-template>
+      <app-stock-item-image-upload
+        [loading]="loading"
+        (onUpload)="onUpload($event)"
+      ></app-stock-item-image-upload>
+      <div class="surface-border border-bottom-1 opacity-50 mb-3 col-12"></div>
+      <app-stock-item-image-list
+        [stockItem]="stockItemToEdit"
+        [loading]="deletingImage"
+        (onImageDelete)="onImageDelete($event)"
+      ></app-stock-item-image-list>
+    </p-tabPanel>
+  </p-tabView>
 
-    <span *ngIf="form.invalid" class="flex justify-content-end text-500 mt-3"
-      >* Please ensure that all fields entered are valid</span
-    >
-
-    <p-toast position="top-left" key="tl" [life]="3000"></p-toast>
-  </form>
+  <p-toast position="bottom-right" [life]="3000"></p-toast>
 </div>

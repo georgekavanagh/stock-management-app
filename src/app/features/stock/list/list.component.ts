@@ -1,4 +1,9 @@
-import { Component, OnInit, inject } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from "@angular/core";
 import { ButtonModule } from "primeng/button";
 import { TableModule } from "primeng/table";
 import { TooltipModule } from "primeng/tooltip";
@@ -9,9 +14,12 @@ import { StockItem } from "../../../shared/models/stock-item.model";
 import { FilterModel } from "../../../shared/models/filter.model";
 import { SortModel } from "../../../shared/models/sort.model";
 import { PaginationModel } from "../../../shared/models/pagination.model";
-import { HttpClient } from "@angular/common/http";
-import { take } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { ConfirmationService, MessageService } from "primeng/api";
+import { ToastModule } from "primeng/toast";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { ImageModule } from "primeng/image";
 
 @Component({
   selector: "app-list",
@@ -22,17 +30,21 @@ import { ActivatedRoute, Router } from "@angular/router";
     TooltipModule,
     TableModule,
     InputTextModule,
+    ToastModule,
+    ConfirmDialogModule,
+    ImageModule,
   ],
-  providers: [ListStore],
+  providers: [ListStore, MessageService, ConfirmationService],
   templateUrl: "./list.component.html",
-  styles: ``,
+  styleUrl: "./list.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListComponent implements OnInit {
   private store = inject(ListStore);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-
-  totalCount: number = 7;
+  private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
 
   list$ = this.store.list$;
   totalCount$ = this.store.totalCount$;
@@ -51,14 +63,24 @@ export class ListComponent implements OnInit {
 
   sortObject: SortModel = {
     sortBy: "Id",
-    sortOrder: "asc",
+    sortOrder: "desc",
   };
 
   paginationObject: PaginationModel = {
     pageNumber: "0",
-    pageSize: "10",
+    pageSize: "8",
   };
   tableLoading: boolean = false;
+
+  constructor() {
+    this.error$.pipe(takeUntilDestroyed()).subscribe((error) => {
+      this.messageService.add({
+        severity: "error",
+        summary: "Error",
+        detail: "Oops! Something went wrong",
+      });
+    });
+  }
 
   ngOnInit(): void {
     this.getList();
@@ -73,7 +95,6 @@ export class ListComponent implements OnInit {
   }
 
   onSort(event: any) {
-    console.log(event);
     this.sortObject.sortBy = event.field;
     this.sortObject.sortOrder = event.order == 1 ? "asc" : "desc";
     this.getList();
@@ -98,10 +119,24 @@ export class ListComponent implements OnInit {
   }
 
   editRecord({ id }: StockItem) {
-    this.router.navigate(["../edit"]);
+    this.router.navigate(["../edit", id], { relativeTo: this.route });
   }
 
   createRecord() {
     this.router.navigate(["../create"], { relativeTo: this.route });
+  }
+
+  deleteRecord({ id }: StockItem) {
+    this.confirmationService.confirm({
+      header: "Are you sure you would like to delete this record?",
+      message: "Please confirm to proceed.",
+      accept: () => {
+        if (id) {
+          this.store.deleteStockItem(id);
+          this.getList();
+        }
+      },
+      reject: () => {},
+    });
   }
 }

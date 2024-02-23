@@ -28,7 +28,30 @@ export class ApiService {
     );
   }
 
+  getStockItemById(id: number): Observable<StockItem> {
+    return this.http.get<StockItem>(`${this.APIURL}/api/StockItems/${id}`);
+  }
+
   createStockItem(formData: any): Observable<StockItem> {
     return this.http.post<StockItem>(`${this.APIURL}/api/StockItems`, formData);
+  }
+
+  updateStockItem(formData: any): Observable<StockItem> {
+    return this.http.put<StockItem>(
+      `${this.APIURL}/api/StockItems/${formData.id}`,
+      formData
+    );
+  }
+
+  uploadImage(formData: any): Observable<any> {
+    return this.http.post(`${this.APIURL}/api/Image`, formData);
+  }
+
+  deleteImage(imageId: number): Observable<any> {
+    return this.http.delete(`${this.APIURL}/api/Image/${imageId}`);
+  }
+
+  deleteStockItem(stockItemId: number): Observable<any> {
+    return this.http.delete(`${this.APIURL}/api/StockItems/${stockItemId}`);
   }
 }

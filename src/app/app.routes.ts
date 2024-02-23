@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { ListComponent } from "./features/stock/list/list.component";
+import { addEditStockItemResolver } from "./shared/resolvers/stock-item.resolver";
 
 export const routes: Routes = [
   {
@@ -15,6 +16,14 @@ export const routes: Routes = [
           import("./features/stock/create/create.component").then(
             (m) => m.CreateComponent
           ),
+      },
+      {
+        path: "edit/:id",
+        loadComponent: () =>
+          import("./features/stock/create/create.component").then(
+            (m) => m.CreateComponent
+          ),
+        resolve: { data: addEditStockItemResolver },
       },
       { path: "", redirectTo: "list", pathMatch: "full" },
     ],

@@ -1,0 +1,25 @@
+<ng-container *ngIf="loading.value; else showFileUpload">
+  Uploading Image...
+</ng-container>
+<ng-template #showFileUpload>
+  <p-fileUpload
+    [auto]="false"
+    [customUpload]="true"
+    mode="basic"
+    [multiple]="false"
+    accept="image/*"
+    chooseLabel="Choose"
+    name="demo[]"
+    [maxFileSize]="5000"
+    invalidFileSizeMessageDetail="File sizes are limited to 5kb"
+    (uploadHandler)="handleUpload($event)"
+  ></p-fileUpload>
+  <p>
+    *File sizes are limited to 5kb
+    <span
+      pTooltip="This is due to AWS Free Tier RDS file size limitations"
+      class="pi pi-info-circle"
+    ></span>
+  </p>
+  <p>*Maximum of 3 files</p>
+</ng-template>
