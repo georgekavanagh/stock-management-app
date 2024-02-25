@@ -25,7 +25,7 @@ import { CommonModule } from "@angular/common";
 })
 export class AppComponent {
   title = "stock-management-app";
-  isLoginPage: boolean = false;
+  isLoginPage: boolean = true;
 
   private router = inject(Router);
 
@@ -38,7 +38,7 @@ export class AppComponent {
         )
       )
       .subscribe((event: NavigationEnd) => {
-        this.isLoginPage = event.url === "/login";
+        this.isLoginPage = event.url === "/login" || event.url === "/";
       });
   }
 }
