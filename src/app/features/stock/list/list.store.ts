@@ -1,7 +1,6 @@
 import { Injectable, inject } from "@angular/core";
 import { ComponentStore } from "@ngrx/component-store";
 import { StockItem } from "../../../shared/models/stock-item.model";
-import { ApiService } from "../../../shared/services/api.service";
 import { PaginationModel } from "../../../shared/models/pagination.model";
 import { SortModel } from "../../../shared/models/sort.model";
 import { FilterModel } from "../../../shared/models/filter.model";
@@ -15,6 +14,7 @@ import {
   tap,
 } from "rxjs/operators";
 import { EMPTY, Observable } from "rxjs";
+import { StockItemService } from "../../../shared/services/stock-item.service";
 
 interface ListState {
   list: StockItem[];
@@ -35,7 +35,7 @@ export class ListStore extends ComponentStore<ListState> {
   readonly totalCount$ = this.select((state) => state.totalCount);
   readonly loading$ = this.select((state) => state.loading);
   readonly error$ = this.select((state) => state.error);
-  private apiService = inject(ApiService);
+  private stockItemService = inject(StockItemService);
 
   constructor() {
     super({
@@ -54,7 +54,7 @@ export class ListStore extends ComponentStore<ListState> {
         debounceTime(3000),
         distinctUntilChanged(),
         switchMap(({ pagination, sort, filters }: ListParams) =>
-          this.apiService.getStockItems(pagination, sort, filters).pipe(
+          this.stockItemService.getStockItems(pagination, sort, filters).pipe(
             retry(2),
             tap({
               next: (result: { totalCount: number; stockItems: StockItem[] }) =>
@@ -75,7 +75,7 @@ export class ListStore extends ComponentStore<ListState> {
     stockItemId$.pipe(
       tap(() => this.patchState({ loading: true })),
       switchMap((stockItemId: number) =>
-        this.apiService.deleteStockItem(stockItemId).pipe(
+        this.stockItemService.deleteStockItem(stockItemId).pipe(
           tap({
             next: () => {},
             error: (err) => this.patchState({ error: err }),

@@ -7,7 +7,6 @@ import {
 import { ToastModule } from "primeng/toast";
 import { TabViewModule } from "primeng/tabview";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ApiService } from "../../../shared/services/api.service";
 import { first } from "rxjs";
 import { MessageService } from "primeng/api";
 import { StockItemFormComponent } from "../shared/stock-item-form/stock-item-form.component";
@@ -15,7 +14,8 @@ import { StockItem } from "../../../shared/models/stock-item.model";
 import { CommonModule } from "@angular/common";
 import { StockItemImageUploadComponent } from "../shared/stock-item-image-upload/stock-item-image-upload.component";
 import { StockItemImageListComponent } from "../shared/stock-item-image-list/stock-item-image-list.component";
-import { Image } from "../../../shared/models/image.model";
+import { StockItemService } from "../../../shared/services/stock-item.service";
+import { ImageService } from "../../../shared/services/image.service";
 
 @Component({
   selector: "app-create",
@@ -39,7 +39,8 @@ export class CreateComponent implements OnInit {
 
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private api = inject(ApiService);
+  private stockItemService = inject(StockItemService);
+  private imageService = inject(ImageService);
   private messageService = inject(MessageService);
 
   ngOnInit(): void {
@@ -53,10 +54,10 @@ export class CreateComponent implements OnInit {
     let subscription;
     if (data.id) {
       //Call edit stock item endpoint
-      subscription = this.api.updateStockItem(data);
+      subscription = this.stockItemService.updateStockItem(data);
     } else {
       //Call create stock item endpoint
-      subscription = this.api.createStockItem(data);
+      subscription = this.stockItemService.createStockItem(data);
     }
 
     subscription.pipe(first()).subscribe({
@@ -95,7 +96,7 @@ export class CreateComponent implements OnInit {
         `${this.stockItemToEdit.regNo}: stock item image`
       );
       formData.append("stockItemId", String(this.stockItemToEdit.id));
-      this.api
+      this.imageService
         .uploadImage(formData)
         .pipe(first())
         .subscribe({
@@ -126,7 +127,7 @@ export class CreateComponent implements OnInit {
   onImageDelete(imageId: number) {
     if (imageId) {
       this.deletingImage = { value: true };
-      this.api
+      this.imageService
         .deleteImage(imageId)
         .pipe(first())
         .subscribe({

@@ -10,16 +10,17 @@
     accept="image/*"
     chooseLabel="Choose"
     name="demo[]"
-    [maxFileSize]="5000"
-    invalidFileSizeMessageDetail="File sizes are limited to 5kb"
+    [maxFileSize]="6000"
+    invalidFileSizeMessageDetail="File sizes are limited to 6kb"
     (uploadHandler)="handleUpload($event)"
   ></p-fileUpload>
   <p>
-    *File sizes are limited to 5kb
+    *File sizes are limited to 6kb
     <span
       pTooltip="This is due to AWS Free Tier RDS file size limitations"
       class="pi pi-info-circle"
     ></span>
   </p>
   <p>*Maximum of 3 files</p>
+  <div class="surface-border border-bottom-1 opacity-50 mb-3 col-12"></div>
 </ng-template>

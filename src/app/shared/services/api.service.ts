@@ -1,9 +1,5 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
-import { PaginationModel } from "../models/pagination.model";
-import { FilterModel } from "../models/filter.model";
-import { SortModel } from "../models/sort.model";
-import { StockItem } from "../models/stock-item.model";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -13,45 +9,19 @@ export class ApiService {
   readonly APIURL = "http://localhost:5067";
   private http = inject(HttpClient);
 
-  getStockItems(
-    pagination: PaginationModel,
-    sort: SortModel,
-    filters: FilterModel
-  ): Observable<{ totalCount: number; stockItems: StockItem[] }> {
-    const urlObject = {
-      ...pagination,
-      ...sort,
-      ...filters,
-    };
-    return this.http.get<{ totalCount: number; stockItems: StockItem[] }>(
-      `${this.APIURL}/api/StockItems?${new URLSearchParams(urlObject)}`
-    );
+  get<T>(url: string): Observable<T> {
+    return this.http.get<T>(`${this.APIURL}/${url}`);
   }
 
-  getStockItemById(id: number): Observable<StockItem> {
-    return this.http.get<StockItem>(`${this.APIURL}/api/StockItems/${id}`);
+  post<T>(url: string, data: any): Observable<T> {
+    return this.http.post<T>(`${this.APIURL}/${url}`, data);
   }
 
-  createStockItem(formData: any): Observable<StockItem> {
-    return this.http.post<StockItem>(`${this.APIURL}/api/StockItems`, formData);
+  put<T>(url: string, data: any): Observable<T> {
+    return this.http.put<T>(`${this.APIURL}/${url}`, data);
   }
 
-  updateStockItem(formData: any): Observable<StockItem> {
-    return this.http.put<StockItem>(
-      `${this.APIURL}/api/StockItems/${formData.id}`,
-      formData
-    );
-  }
-
-  uploadImage(formData: any): Observable<any> {
-    return this.http.post(`${this.APIURL}/api/Image`, formData);
-  }
-
-  deleteImage(imageId: number): Observable<any> {
-    return this.http.delete(`${this.APIURL}/api/Image/${imageId}`);
-  }
-
-  deleteStockItem(stockItemId: number): Observable<any> {
-    return this.http.delete(`${this.APIURL}/api/StockItems/${stockItemId}`);
+  delete<T>(url: string): Observable<T> {
+    return this.http.delete<T>(`${this.APIURL}/${url}`);
   }
 }

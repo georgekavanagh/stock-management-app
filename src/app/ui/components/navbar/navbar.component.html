@@ -1,0 +1,49 @@
+<div
+  class="surface-overlay py-3 px-6 flex align-items-center justify-content-between relative lg:static"
+  style="min-height: 80px"
+>
+  <img
+    src="assets/images/logo.png"
+    alt="Image"
+    height="40"
+    class="mr-0 lg:mr-6"
+  /><a
+    pripple=""
+    pstyleclass="@next"
+    enterclass="hidden"
+    leavetoclass="hidden"
+    class="p-element p-ripple cursor-pointer block lg:hidden text-700"
+    ><i class="pi pi-bars text-4xl"></i><span class="p-ink"></span
+  ></a>
+  <div
+    class="align-items-center flex-grow-1 justify-content-between hidden lg:flex absolute lg:static w-full surface-overlay left-0 top-100 z-1 shadow-2 lg:shadow-none"
+  >
+    <ul
+      class="list-none p-0 m-0 flex lg:align-items-center select-none flex-column lg:flex-row"
+    >
+      <li>
+        <a
+          pripple=""
+          class="p-ripple p-element flex px-6 p-3 lg:px-3 lg:py-2 align-items-center text-600 hover:text-900 hover:surface-100 font-medium border-round cursor-pointer transition-colors transition-duration-150 no-underline"
+          [routerLink]="['/stock/list']"
+          ><i class="pi pi-list mr-2"></i><span>Stock List</span
+          ><span class="p-ink"></span
+        ></a>
+      </li>
+    </ul>
+    <ul
+      class="list-none p-0 m-0 flex lg:align-items-center select-none flex-column lg:flex-row border-top-1 surface-border lg:border-top-none"
+    >
+      <li>
+        <p-button
+          icon="pi pi-angle-down"
+          severity="secondary"
+          [rounded]="true"
+          [text]="true"
+          (click)="menu.toggle($event)"
+        ></p-button>
+        <p-menu #menu [model]="items" [popup]="true"></p-menu>
+      </li>
+    </ul>
+  </div>
+</div>

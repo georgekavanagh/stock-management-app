@@ -4,8 +4,8 @@ import {
   ResolveFn,
   RouterStateSnapshot,
 } from "@angular/router";
-import { ApiService } from "../services/api.service";
 import { of } from "rxjs";
+import { StockItemService } from "../services/stock-item.service";
 
 export const addEditStockItemResolver: ResolveFn<any> = (
   route: ActivatedRouteSnapshot,
@@ -16,5 +16,5 @@ export const addEditStockItemResolver: ResolveFn<any> = (
     return of(null);
   }
 
-  return inject(ApiService).getStockItemById(id);
+  return inject(StockItemService).getStockItemById(id);
 };
