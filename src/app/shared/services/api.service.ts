@@ -1,14 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: "root",
 })
 export class ApiService {
-  // readonly APIURL = "http://localhost:5067";
-  readonly APIURL =
-    "https://stockmanagementapi20240225181857.azurewebsites.net";
+  readonly APIURL = environment.apiUrl;
   private http = inject(HttpClient);
 
   get<T>(url: string): Observable<T> {
