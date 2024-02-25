@@ -6,7 +6,9 @@ import { Observable } from "rxjs";
   providedIn: "root",
 })
 export class ApiService {
-  readonly APIURL = "http://localhost:5067";
+  // readonly APIURL = "http://localhost:5067";
+  readonly APIURL =
+    "https://stockmanagementapi20240225181857.azurewebsites.net";
   private http = inject(HttpClient);
 
   get<T>(url: string): Observable<T> {

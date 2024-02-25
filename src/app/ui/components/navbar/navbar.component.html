@@ -7,14 +7,18 @@
     alt="Image"
     height="40"
     class="mr-0 lg:mr-6"
-  /><a
+  />
+  <p-menu #menu [model]="items" [popup]="true"></p-menu>
+  <a
     pripple=""
     pstyleclass="@next"
     enterclass="hidden"
     leavetoclass="hidden"
     class="p-element p-ripple cursor-pointer block lg:hidden text-700"
+    (click)="menu.toggle($event)"
     ><i class="pi pi-bars text-4xl"></i><span class="p-ink"></span
   ></a>
+
   <div
     class="align-items-center flex-grow-1 justify-content-between hidden lg:flex absolute lg:static w-full surface-overlay left-0 top-100 z-1 shadow-2 lg:shadow-none"
   >
@@ -36,7 +40,8 @@
     >
       <li>
         <p-button
-          icon="pi pi-angle-down"
+          icon="pi pi-bars"
+          size="large"
           severity="secondary"
           [rounded]="true"
           [text]="true"
